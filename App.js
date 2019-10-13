@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {validateAll} from 'indicative/validator';
 import { View, Text, StyleSheet, Button} from 'react-native';
 import {Hoshi} from 'react-native-textinput-effects';
+import Axios from 'axios';
 
 class Register extends Component {
 
@@ -9,7 +10,8 @@ class Register extends Component {
     name:'',
     email:'',
     password:'',
-    password_confirmation:''
+    password_confirmation:'',
+    userData:''
   }
 
   registerUser = async(data) => {
@@ -19,14 +21,31 @@ class Register extends Component {
       password:'required|string|min:6|confirmed',
     }
 
+    const messages = {
+      required: (field) => `${field} is required`,
+      'email.email': 'The email syntax is wrong',
+      'password.confirmed': 'THe password did not match',
+      'password.min': 'Password is too short'
+    }
+
     try {
-      await validateAll(data, rules, message)
+      await validateAll(data, rules, messages)
+      const response = await Axios.post('https://react-blog-api.bahdcasts.com/api/auth/register',{
+        name:data.name,
+        email:data.email,
+        password:data.password
+      })
+
+      this.setState({
+        userData: response
+      })
     } catch {
 
     }
   }
 
   render() {
+    console.log()
     return (
       <View style={styles.container}>
         <View style={{backgroundColor:'black', padding:10, marginBottom:20}}>
