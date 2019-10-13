@@ -1,19 +1,27 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+//import liraries
+import React, { Component } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
-  );
+// create a component
+class Register extends Component {
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text>Register</Text>
+      </View>
+    );
+  }
 }
 
+// define your styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
   },
 });
+
+//make this component available to the app
+export default Register;
