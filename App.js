@@ -11,7 +11,8 @@ class Register extends Component {
     email:'',
     password:'',
     password_confirmation:'',
-    userData:''
+    userData:'',
+    error:{}
   }
 
   registerUser = async(data) => {
@@ -30,22 +31,27 @@ class Register extends Component {
 
     try {
       await validateAll(data, rules, messages)
-      const response = await Axios.post('https://react-blog-api.bahdcasts.com/api/auth/register',{
-        name:data.name,
-        email:data.email,
-        password:data.password
-      })
+      // const response = await Axios.post('https://react-blog-api.bahdcasts.com/api/auth/register',{
+      //   name:data.name,
+      //   email:data.email,
+      //   password:data.password
+      // })
 
+      // this.setState({
+      //   userData: response
+      // })
+    } catch(errors) {
+      // console.log('-------',errors)
+      const formattedErrors = {}
+      errors.forEach(error => formattedErrors[error.field] = error.message)
       this.setState({
-        userData: response
+        error:formattedErrors
       })
-    } catch {
-
     }
   }
 
   render() {
-    console.log()
+    console.log('----------',this.state.error)
     return (
       <View style={styles.container}>
         <View style={{backgroundColor:'black', padding:10, marginBottom:20}}>
@@ -62,6 +68,9 @@ class Register extends Component {
           onChangeText={name => this.setState({name})}
           >
         </Hoshi>
+        {
+          this.state.error['name'] && <Text style={{fontSize:25, color:'red'}}>{this.state.error['name']}</Text>
+        }
         <Hoshi
           style={{marginBottom:20}}
           label={"email"}
@@ -73,6 +82,9 @@ class Register extends Component {
           onChangeText={email => this.setState({email})}
           >
         </Hoshi>
+        {
+          this.state.error['email'] && <Text style={{fontSize:25, color:'red'}}>{this.state.error['email']}</Text>
+        }
         <Hoshi
           style={{marginBottom:20}}
           label={"password"}
@@ -85,6 +97,9 @@ class Register extends Component {
           onChangeText={password => this.setState({password})}
           >
         </Hoshi>
+        {
+          this.state.error['password'] && <Text style={{fontSize:25, color:'red'}}>{this.state.error['password']}</Text>
+        }
         <Hoshi 
           label={"Reconfirm password"}
           secureTextEntry
