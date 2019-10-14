@@ -39,7 +39,7 @@ class Register extends Component {
       this.setState({
         userData: response.data.data.user
       })
-      this.props.navigation.navigate("Profile")
+      this.props.navigation.navigate("Profile",{...this.state.userData})
     } catch(errors) {
       console.log('-------', errors.response)
       const formattedErrors = {}
