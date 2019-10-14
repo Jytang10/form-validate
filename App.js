@@ -31,22 +31,28 @@ class Register extends Component {
 
     try {
       await validateAll(data, rules, messages)
-      // const response = await Axios.post('https://react-blog-api.bahdcasts.com/api/auth/register',{
-      //   name:data.name,
-      //   email:data.email,
-      //   password:data.password
-      // })
-
-      // this.setState({
-      //   userData: response
-      // })
-    } catch(errors) {
-      // console.log('-------',errors)
-      const formattedErrors = {}
-      errors.forEach(error => formattedErrors[error.field] = error.message)
-      this.setState({
-        error:formattedErrors
+      const response = await Axios.post('https://react-blog-api.bahdcasts.com/api/auth/register',{
+        name:data.name,
+        email:data.email,
+        password:data.password
       })
+      this.setState({
+        userData: response
+      })
+    } catch(errors) {
+      console.log('-------', errors.response)
+      const formattedErrors = {}
+      if(errors.response && errors.response.status === 422){
+        formattedErrors['email'] = errors.response.data['email'][0]
+        this.setState({
+          error:formattedErrors
+        })
+      }else{
+        errors.forEach(error => formattedErrors[error.field] = error.message)
+        this.setState({
+          error:formattedErrors
+        })
+      }
     }
   }
 
