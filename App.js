@@ -11,7 +11,7 @@ const screen = createStackNavigator({
     screen: Profile
   }
 },{
-  headerMode:'none'
+  headerMode:'none'   //remove to add constant top header
 })
 
 const renderScreen = createAppContainer(screen)
